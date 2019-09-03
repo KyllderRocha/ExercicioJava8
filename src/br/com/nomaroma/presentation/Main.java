@@ -24,9 +24,8 @@ public class Main {
 	private static BankService service = ServiceFactory.getService();
 	
 	public static void main(String[] args) {
-		//TODO to test here
-
-		
+		imprimirNomesClientes();
+		imprimirMediaSaldos();
 	}
 	
 	/**
@@ -34,7 +33,11 @@ public class Main {
 	 * Victor Lira - vl@cin.ufpe.br
 	 */
 	public static void imprimirNomesClientes() {
-		throw new UnsupportedOperationException();
+		service
+			.listClients()
+			.stream()
+			.distinct()
+			.forEach( c -> System.out.println(c.getName()+" - "+c.getEmail()));
 	}
 	
 	/**
@@ -42,8 +45,22 @@ public class Main {
 	 * Victor Lira - 352
 	 */
 	public static void imprimirMediaSaldos() {
-		throw new UnsupportedOperationException();
 		
+		try{
+			service
+			.listClients()
+			.stream()
+			.distinct()
+			.forEach( c -> System.out.println(c.getName()+" - "+
+				c.getAccounts()
+					.stream()
+					.mapToDouble(a -> a.getBalance())
+					.average()
+					.getAsDouble()
+			));
+		}catch (Exception e) {
+			
+		}
 	}
 	
 	/**
@@ -52,7 +69,22 @@ public class Main {
 	 * com o maior saldo somando todas as suas contas.
 	 */
 	public static void imprimirPaisClienteMaisRico() {
-throw new UnsupportedOperationException();
+		try{
+			service
+				.listClients()
+				.stream()
+				.distinct()
+				.mapToDouble( c -> 
+					c.getAccounts()
+					.stream()
+					.mapToDouble(a -> a.getBalance())
+					.average()
+					.getAsDouble()
+				).max();			
+				
+		}catch (Exception e) {
+			
+		}
 	}
 	
 	/**
